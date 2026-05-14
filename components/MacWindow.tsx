@@ -25,6 +25,7 @@ interface MacWindowProps {
   children?: ReactNode;
   filesOpen?: boolean;
   onFilesClick?: () => void;
+  isMobile?: boolean;
 }
 
 function ActivityBarIcon({
@@ -61,7 +62,7 @@ function ActivityBarIcon({
   );
 }
 
-export default function MacWindow({ children, filesOpen = true, onFilesClick }: MacWindowProps) {
+export default function MacWindow({ children, filesOpen = true, onFilesClick, isMobile = false }: MacWindowProps) {
   return (
     <div className="flex flex-col w-full h-screen overflow-hidden" style={{ backgroundColor: "#191a1b" }}>
 
@@ -95,34 +96,38 @@ export default function MacWindow({ children, filesOpen = true, onFilesClick }: 
           </button>
         </div>
 
-        {/* Search Bar + flanking arrows — centered as a group */}
-        <div className="flex-1 flex items-center justify-center gap-1">
-          <button
-            aria-label="Back"
-            className="text-zinc-500 hover:text-zinc-200 p-0.5 rounded shrink-0"
-          >
-            <ChevronLeft size={18} strokeWidth={1.5} />
-          </button>
-          <button
-            aria-label="Forward"
-            className="text-zinc-500 hover:text-zinc-200 p-0.5 rounded shrink-0"
-          >
-            <ChevronRight size={18} strokeWidth={1.5} />
-          </button>
+        {/* Search Bar + flanking arrows — desktop only */}
+        {isMobile ? (
+          <div className="flex-1" />
+        ) : (
+          <div className="flex-1 flex items-center justify-center gap-1">
+            <button
+              aria-label="Back"
+              className="text-zinc-500 hover:text-zinc-200 p-0.5 rounded shrink-0"
+            >
+              <ChevronLeft size={18} strokeWidth={1.5} />
+            </button>
+            <button
+              aria-label="Forward"
+              className="text-zinc-500 hover:text-zinc-200 p-0.5 rounded shrink-0"
+            >
+              <ChevronRight size={18} strokeWidth={1.5} />
+            </button>
 
-          <div
-            className="flex items-center gap-2 rounded px-3 h-[26px] cursor-pointer select-none"
-            style={{
-              backgroundColor: "#2b2d30",
-              width: "35%",
-              minWidth: "200px",
-              maxWidth: "480px",
-            }}
-          >
-            <Search size={12} className="text-zinc-500 shrink-0" />
-            <span className="text-zinc-400 text-xs truncate">surajrbhardwaj</span>
+            <div
+              className="flex items-center gap-2 rounded px-3 h-[26px] cursor-pointer select-none"
+              style={{
+                backgroundColor: "#2b2d30",
+                width: "35%",
+                minWidth: "200px",
+                maxWidth: "480px",
+              }}
+            >
+              <Search size={12} className="text-zinc-500 shrink-0" />
+              <span className="text-zinc-400 text-xs truncate">surajrbhardwaj</span>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Right controls */}
         <div className="flex items-center gap-1 shrink-0">

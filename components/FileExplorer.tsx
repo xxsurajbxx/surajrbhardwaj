@@ -20,6 +20,7 @@ interface FileNode {
 
 interface FileExplorerProps {
   onFileOpen: (name: string, path: string) => void;
+  singleClick?: boolean;
 }
 
 function fileIcon(name: string) {
@@ -35,10 +36,12 @@ function TreeNode({
   node,
   depth,
   onFileOpen,
+  singleClick,
 }: {
   node: FileNode;
   depth: number;
   onFileOpen: (name: string, path: string) => void;
+  singleClick?: boolean;
 }) {
   const [open, setOpen] = useState(depth === 0);
   const indent = BASE_INDENT + depth * LEVEL_INDENT;
@@ -61,7 +64,7 @@ function TreeNode({
         </button>
         {open &&
           node.children?.map((child) => (
-            <TreeNode key={child.name} node={child} depth={depth + 1} onFileOpen={onFileOpen} />
+            <TreeNode key={child.name} node={child} depth={depth + 1} onFileOpen={onFileOpen} singleClick={singleClick} />
           ))}
       </div>
     );
@@ -71,7 +74,8 @@ function TreeNode({
     <button
       className="flex items-center gap-1.5 w-full text-left py-[2px] pr-2 hover:bg-white/5 select-none cursor-pointer"
       style={{ paddingLeft: `${indent + 16}px` }}
-      onDoubleClick={() => node.path && onFileOpen(node.name, node.path)}
+      onClick={singleClick ? () => node.path && onFileOpen(node.name, node.path) : undefined}
+      onDoubleClick={!singleClick ? () => node.path && onFileOpen(node.name, node.path) : undefined}
     >
       {fileIcon(node.name)}
       <span className="text-zinc-300 text-xs truncate">{node.name}</span>
@@ -79,7 +83,7 @@ function TreeNode({
   );
 }
 
-export default function FileExplorer({ onFileOpen }: FileExplorerProps) {
+export default function FileExplorer({ onFileOpen, singleClick = false }: FileExplorerProps) {
   const [rootOpen, setRootOpen] = useState(true);
 
   return (
@@ -114,7 +118,7 @@ export default function FileExplorer({ onFileOpen }: FileExplorerProps) {
         {rootOpen && (
           <div>
             {(filesData as FileNode).children?.map((node) => (
-              <TreeNode key={node.name} node={node} depth={0} onFileOpen={onFileOpen} />
+              <TreeNode key={node.name} node={node} depth={0} onFileOpen={onFileOpen} singleClick={singleClick} />
             ))}
           </div>
         )}

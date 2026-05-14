@@ -2,13 +2,16 @@
   <img src="/assets/profile.jpg" alt="Suraj Rajesh Bhardwaj" width="125" style="border-radius: 50%; border: 2px solid #3f3f46; flex-shrink: 0;">
   <div>
     <h1 style="margin: 0 0 2px 0;">Suraj Rajesh Bhardwaj</h1>
+    <div id="header-subtitle">
     <p style="margin: 0 0 2px 0;">Software Engineer — Systems, ML & Quantitative Development</p>
     <p style="margin: 0; padding: 0; color: #71717a; font-size: 0.78rem; line-height: 1.4;">
       <a href="mailto:surajrbhardwaj@yahoo.com" style="color: #60a5fa; text-decoration: none;">surajrbhardwaj@yahoo.com</a> &nbsp;·&nbsp;
-      609-665-7633 &nbsp;·&nbsp;
+      <a href="tel:6096657633" style="color: #60a5fa; text-decoration: none;">(609) 665-7633</a> &nbsp;·&nbsp;
       <a href="https://linkedin.com/in/surajbhardwaj29" style="color: #60a5fa; text-decoration: none;">LinkedIn</a> &nbsp;·&nbsp;
       <a href="https://github.com/xxsurajbxx" style="color: #60a5fa; text-decoration: none;">GitHub</a>
     </p>
+    </div>
+    <style>@media (max-width: 768px) { #header-subtitle { display: none; } }</style>
   </div>
 </div>
 

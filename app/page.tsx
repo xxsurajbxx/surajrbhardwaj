@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle, useGroupRef } from "react-resizable-panels";
 import MacWindow from "@/components/MacWindow";
 import FileExplorer from "@/components/FileExplorer";
@@ -11,13 +11,26 @@ type OpenTab = { name: string; path: string };
 
 const TERMINAL_PANEL_ID = "terminal";
 const EDITOR_PANEL_ID = "editor";
-const COLLAPSED_SIZE = 3.8; // percentage — ~28px header height
+const COLLAPSED_SIZE = 3.8;
 const EXPANDED_SIZE = 35;
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return isMobile;
+}
+
 export default function Home() {
+  const isMobile = useIsMobile();
   const verticalGroupRef = useGroupRef();
   const [terminalMinimized, setTerminalMinimized] = useState(false);
-  const [filesOpen, setFilesOpen] = useState(true);
+  const [filesOpen, setFilesOpen] = useState(false);
   const defaultTab: OpenTab = { name: "README.md", path: "/content/README.md" };
   const [openTabs, setOpenTabs] = useState<OpenTab[]>([defaultTab]);
   const [activeTab, setActiveTab] = useState<string | null>(defaultTab.path);
@@ -53,6 +66,37 @@ export default function Home() {
       [TERMINAL_PANEL_ID]: EXPANDED_SIZE,
     });
     setTerminalMinimized(false);
+  }
+
+  if (isMobile) {
+    return (
+      <MacWindow filesOpen={filesOpen} onFilesClick={() => setFilesOpen((o) => !o)} isMobile>
+        <div className="relative h-full overflow-hidden">
+          {/* Editor fills full height */}
+          <div className="h-full">
+            <EditorPanel
+              openTabs={openTabs}
+              activeTab={activeTab}
+              onTabClick={setActiveTab}
+              onTabClose={handleTabClose}
+            />
+          </div>
+
+          {/* File explorer overlay drawer */}
+          {filesOpen && (
+            <div className="absolute inset-0 z-10" style={{ backgroundColor: "#191a1b" }}>
+              <FileExplorer
+                singleClick
+                onFileOpen={(name, path) => {
+                  handleFileOpen(name, path);
+                  setFilesOpen(false);
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </MacWindow>
+    );
   }
 
   return (
