@@ -1,0 +1,24 @@
+{
+  "name": "portfolio",
+  "type": "folder",
+  "children": [
+    { "name": "README.md", "type": "file", "path": "/content/README.md" },
+    {
+      "name": "Experience",
+      "type": "folder",
+      "children": [
+        { "name": "resume.md", "type": "file", "path": "/content/experience/resume.md" },
+        { "name": "skills.md", "type": "file", "path": "/content/experience/skills.md" }
+      ]
+    },
+    {
+      "name": "Projects",
+      "type": "folder",
+      "children": [
+        { "name": "README.md", "type": "file", "path": "/content/projects/README.md" },
+        { "name": "project-one.md", "type": "file", "path": "/content/projects/project-one.md" },
+        { "name": "project-two.md", "type": "file", "path": "/content/projects/project-two.md" }
+      ]
+    }
+  ]
+}

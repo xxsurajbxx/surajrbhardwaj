@@ -23,6 +23,8 @@ import {
 
 interface MacWindowProps {
   children?: ReactNode;
+  filesOpen?: boolean;
+  onFilesClick?: () => void;
 }
 
 function ActivityBarIcon({
@@ -30,16 +32,19 @@ function ActivityBarIcon({
   badge,
   active = false,
   label,
+  onClick,
 }: {
   icon: React.ElementType;
   badge?: string;
   active?: boolean;
   label: string;
+  onClick?: () => void;
 }) {
   return (
     <button
       aria-label={label}
-      className={`relative flex items-center justify-center w-full h-10 group ${
+      onClick={onClick}
+      className={`relative flex items-center justify-center w-full h-10 group ${onClick ? "cursor-pointer" : "cursor-default"} ${
         active ? "text-white" : "text-zinc-500 hover:text-zinc-300"
       }`}
     >
@@ -56,7 +61,7 @@ function ActivityBarIcon({
   );
 }
 
-export default function MacWindow({ children }: MacWindowProps) {
+export default function MacWindow({ children, filesOpen = true, onFilesClick }: MacWindowProps) {
   return (
     <div className="flex flex-col w-full h-screen overflow-hidden" style={{ backgroundColor: "#191a1b" }}>
 
@@ -66,22 +71,28 @@ export default function MacWindow({ children }: MacWindowProps) {
         style={{ backgroundColor: "#191a1b", borderBottom: "1px solid rgba(255,255,255,0.05)" }}
       >
         {/* Traffic Lights */}
-        <div className="flex items-center gap-[6px]">
+        <div className="group/traffic flex items-center gap-[6px]">
           <button
-            className="w-3 h-3 rounded-full"
+            className="relative w-3 h-3 rounded-full flex items-center justify-center"
             style={{ backgroundColor: "#ff5f57" }}
             aria-label="Close"
-          />
+          >
+            <span className="hidden group-hover/traffic:block text-[#820005] leading-none" style={{ fontSize: "9px", fontWeight: 700, lineHeight: 1 }}>✕</span>
+          </button>
           <button
-            className="w-3 h-3 rounded-full"
+            className="relative w-3 h-3 rounded-full flex items-center justify-center"
             style={{ backgroundColor: "#febc2e" }}
             aria-label="Minimize"
-          />
+          >
+            <span className="hidden group-hover/traffic:block text-[#7d5000] leading-none" style={{ fontSize: "15px", fontWeight: 700, lineHeight: 1 }}>−</span>
+          </button>
           <button
-            className="w-3 h-3 rounded-full"
+            className="relative w-3 h-3 rounded-full flex items-center justify-center"
             style={{ backgroundColor: "#28c840" }}
             aria-label="Fullscreen"
-          />
+          >
+            <span className="hidden group-hover/traffic:block text-[#006500] leading-none select-none" style={{ fontSize: "15px", fontWeight: 900, lineHeight: 1 }}>⤡</span>
+          </button>
         </div>
 
         {/* Search Bar + flanking arrows — centered as a group */}
@@ -131,7 +142,7 @@ export default function MacWindow({ children }: MacWindowProps) {
         >
           {/* Top icons */}
           <div className="flex flex-col items-center w-full flex-1">
-            <ActivityBarIcon icon={Files} label="Explorer" active />
+            <ActivityBarIcon icon={Files} label="Explorer" active={filesOpen} onClick={onFilesClick} />
             <ActivityBarIcon icon={Search} label="Search" />
             <ActivityBarIcon icon={GitBranch} label="Source Control" badge="6" />
             <ActivityBarIcon icon={Play} label="Run and Debug" />
