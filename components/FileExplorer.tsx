@@ -18,6 +18,10 @@ interface FileNode {
   children?: FileNode[];
 }
 
+interface FileExplorerProps {
+  onFileOpen: (name: string, path: string) => void;
+}
+
 function fileIcon(name: string) {
   if (name.endsWith(".tsx") || name.endsWith(".ts") || name.endsWith(".js"))
     return <FileCode size={14} className="text-blue-400 shrink-0" />;
@@ -27,7 +31,15 @@ function fileIcon(name: string) {
 const BASE_INDENT = 8;
 const LEVEL_INDENT = 12;
 
-function TreeNode({ node, depth }: { node: FileNode; depth: number }) {
+function TreeNode({
+  node,
+  depth,
+  onFileOpen,
+}: {
+  node: FileNode;
+  depth: number;
+  onFileOpen: (name: string, path: string) => void;
+}) {
   const [open, setOpen] = useState(depth === 0);
   const indent = BASE_INDENT + depth * LEVEL_INDENT;
 
@@ -47,9 +59,10 @@ function TreeNode({ node, depth }: { node: FileNode; depth: number }) {
           </span>
           <span className="text-zinc-300 text-xs truncate">{node.name}</span>
         </button>
-        {open && node.children?.map((child) => (
-          <TreeNode key={child.name} node={child} depth={depth + 1} />
-        ))}
+        {open &&
+          node.children?.map((child) => (
+            <TreeNode key={child.name} node={child} depth={depth + 1} onFileOpen={onFileOpen} />
+          ))}
       </div>
     );
   }
@@ -58,6 +71,7 @@ function TreeNode({ node, depth }: { node: FileNode; depth: number }) {
     <button
       className="flex items-center gap-1.5 w-full text-left py-[2px] pr-2 hover:bg-white/5 select-none cursor-pointer"
       style={{ paddingLeft: `${indent + 16}px` }}
+      onDoubleClick={() => node.path && onFileOpen(node.name, node.path)}
     >
       {fileIcon(node.name)}
       <span className="text-zinc-300 text-xs truncate">{node.name}</span>
@@ -65,7 +79,7 @@ function TreeNode({ node, depth }: { node: FileNode; depth: number }) {
   );
 }
 
-export default function FileExplorer() {
+export default function FileExplorer({ onFileOpen }: FileExplorerProps) {
   const [rootOpen, setRootOpen] = useState(true);
 
   return (
@@ -100,7 +114,7 @@ export default function FileExplorer() {
         {rootOpen && (
           <div>
             {(filesData as FileNode).children?.map((node) => (
-              <TreeNode key={node.name} node={node} depth={0} />
+              <TreeNode key={node.name} node={node} depth={0} onFileOpen={onFileOpen} />
             ))}
           </div>
         )}
