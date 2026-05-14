@@ -144,7 +144,7 @@ export default function MacWindow({ children, filesOpen = true, onFilesClick }: 
           <div className="flex flex-col items-center w-full flex-1">
             <ActivityBarIcon icon={Files} label="Explorer" active={filesOpen} onClick={onFilesClick} />
             <ActivityBarIcon icon={Search} label="Search" />
-            <ActivityBarIcon icon={GitBranch} label="Source Control" badge="6" />
+            <ActivityBarIcon icon={GitBranch} label="Source Control" />
             <ActivityBarIcon icon={Play} label="Run and Debug" />
             <ActivityBarIcon icon={LayoutGrid} label="Extensions" />
             <ActivityBarIcon icon={FlaskConical} label="Testing" />

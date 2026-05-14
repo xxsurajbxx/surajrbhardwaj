@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Visual Studio Code — Portfolio",
+  title: "Suraj Rajesh Bhardwaj",
   description: "Personal portfolio styled as a macOS VS Code interface",
 };
 

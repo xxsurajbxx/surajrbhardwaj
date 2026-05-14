@@ -54,7 +54,7 @@ function TreeNode({
           <span className="text-zinc-500 shrink-0">
             {open ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
           </span>
-          <span className="text-yellow-500 shrink-0">
+          <span className="text-[#007acc] shrink-0">
             {open ? <FolderOpen size={14} /> : <Folder size={14} />}
           </span>
           <span className="text-zinc-300 text-xs truncate">{node.name}</span>
