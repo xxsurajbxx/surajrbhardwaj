@@ -1,5 +1,5 @@
 {
-  "name": "portfolio",
+  "name": "Portfolio",
   "type": "folder",
   "children": [
     { "name": "README.md", "type": "file", "path": "/content/README.md" },
