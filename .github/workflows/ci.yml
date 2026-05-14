@@ -21,10 +21,10 @@ jobs:
         run: npm install
 
       - name: Linting
-        [cite_start]run: npm run lint # Ensures code follows best practices [cite: 193]
+        run: npm run lint
 
       - name: Type Checking
-        [cite_start]run: npx tsc --noEmit # Ensures no TypeScript errors [cite: 194]
+        run: npx tsc --noEmit
 
       - name: Build Project
-        [cite_start]run: npm run build # Verifies project can successfully compile [cite: 221]
+        run: npm run build
