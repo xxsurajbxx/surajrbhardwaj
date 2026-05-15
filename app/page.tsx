@@ -17,7 +17,9 @@ const DEFAULT_TAB: OpenTab = { name: "README.md", path: "/content/README.md" };
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== "undefined" ? window.matchMedia("(max-width: 768px)").matches : false
+    typeof window !== "undefined"
+      ? window.matchMedia("(max-width: 768px)").matches
+      : false
   );
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
@@ -33,7 +35,9 @@ export default function Home() {
   const verticalGroupRef = useGroupRef();
   const [terminalMinimized, setTerminalMinimized] = useState(false);
   const [filesOpen, setFilesOpen] = useState(() =>
-    typeof window !== "undefined" ? !window.matchMedia("(max-width: 768px)").matches : false
+    typeof window !== "undefined"
+      ? !window.matchMedia("(max-width: 768px)").matches
+      : false
   );
   const [openTabs, setOpenTabs] = useState<OpenTab[]>([DEFAULT_TAB]);
   const [activeTab, setActiveTab] = useState<string | null>(DEFAULT_TAB.path);

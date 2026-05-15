@@ -7,9 +7,9 @@
 ## Technical Architecture & Logic
 
 * **The Modern Stack:**
- * **Framework:** Next.js 15 (App Router).
- * **Styling:** Tailwind CSS v4.
- * **Logic & UI:** TypeScript, Lucide React (icons), and `react-resizable-panels`.
+  * **Framework:** Next.js 15 (App Router).
+  * **Styling:** Tailwind CSS v4.
+  * **Logic & UI:** TypeScript, Lucide React (icons), and `react-resizable-panels`.
 * **The "Brain" (Architecture):** The core of the application is a JSON-based Virtual File System (VFS) that acts as the single source of truth for the entire UI.
 
 ### Engineering Challenges

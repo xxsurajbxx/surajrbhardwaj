@@ -38,16 +38,16 @@ I am seeking opportunities in **Quantitative Development**, **Distributed System
 
 ## The Career "Source Code"
 
-* **The Conceptual Hook:** This portfolio is designed as a functional simulation of a macOS-based VS Code interface. Rather than presenting a static resume, I treat my career path, technical experiences, and professional goals as "source code" that the user is encouraged to navigate and explore.
+* **The Conceptual Hook:** This portfolio is hosted at [surajrbhardwaj.vercel.app](https://surajrbhardwaj.vercel.app) and is designed as a functional simulation of a macOS-based VS Code interface. Rather than presenting a static resume, I treat my career path, technical experiences, and professional goals as "source code" that the user is encouraged to navigate and explore.
 
 ---
 
 ## Technical Architecture & Logic
 
 * **The Modern Stack:**
- * **Framework:** Next.js 15 (App Router).
- * **Styling:** Tailwind CSS v4.
- * **Logic & UI:** TypeScript, Lucide React (icons), and `react-resizable-panels`.
+  * **Framework:** Next.js 15 (App Router).
+  * **Styling:** Tailwind CSS v4.
+  * **Logic & UI:** TypeScript, Lucide React (icons), and `react-resizable-panels`.
 * **The "Brain" (Architecture):** The core of the application is a JSON-based Virtual File System (VFS) that acts as the single source of truth for the entire UI.
 
 ### Engineering Challenges
@@ -76,3 +76,24 @@ The terminal is a fully interactive command-line interface synced with the VFS, 
 * **CI/CD Pipeline:** The repository uses GitHub Actions to automate technical verification on every push. This includes automated linting, type-checking (TypeScript), and build verification to ensure stability and code quality.
 * **Conventional Commits:** I adhere to the Conventional Commits standard (e.g., `feat:`, `fix:`, `chore:`) to maintain a professional, readable, and structured changelog.
 * **Mobile Strategy:** Recognizing that professional networks are often accessed on mobile, I implemented a "mobile-first" fallback. On small screens, the terminal is hidden, and the sidebar is transformed into a toggleable drawer to prioritize the main editor content.
+
+---
+
+## Getting Started
+
+### Prerequisites
+* **Node.js** v18 or later
+* **npm**, **yarn**, **pnpm**, or **bun**
+
+### Installation & Development
+
+```bash
+# 1. Clone the repository
+git clone [https://github.com/xxsurajbxx/PortfolioWebsite.git](https://github.com/xxsurajbxx/PortfolioWebsite.git)
+cd PortfolioWebsite
+
+# 2. Install dependencies
+npm install
+
+# 3. Start the development server
+npm run dev
