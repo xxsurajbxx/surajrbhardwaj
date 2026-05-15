@@ -16,10 +16,11 @@ const EXPANDED_SIZE = 35;
 const DEFAULT_TAB: OpenTab = { name: "README.md", path: "/content/README.md" };
 
 function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.matchMedia("(max-width: 768px)").matches : false
+  );
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
-    setIsMobile(mq.matches);
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
@@ -31,13 +32,11 @@ export default function Home() {
   const isMobile = useIsMobile();
   const verticalGroupRef = useGroupRef();
   const [terminalMinimized, setTerminalMinimized] = useState(false);
-  const [filesOpen, setFilesOpen] = useState(false);
+  const [filesOpen, setFilesOpen] = useState(() =>
+    typeof window !== "undefined" ? !window.matchMedia("(max-width: 768px)").matches : false
+  );
   const [openTabs, setOpenTabs] = useState<OpenTab[]>([DEFAULT_TAB]);
   const [activeTab, setActiveTab] = useState<string | null>(DEFAULT_TAB.path);
-
-  useEffect(() => {
-    setFilesOpen(!window.matchMedia("(max-width: 768px)").matches);
-  }, []);
 
   function handleFileOpen(name: string, path: string) {
     setOpenTabs((prev) => {
