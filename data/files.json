@@ -4,20 +4,25 @@
   "children": [
     { "name": "README.md", "type": "file", "path": "/content/README.md" },
     {
-      "name": "Experience",
+      "name": "Experiences",
       "type": "folder",
       "children": [
-        { "name": "resume.md", "type": "file", "path": "/content/experience/resume.md" },
-        { "name": "skills.md", "type": "file", "path": "/content/experience/skills.md" }
+        { "name": "BankOfAmerica.md", "type": "file", "path": "/content/Experiences/BankOfAmerica.md" },
+        { "name": "Travelers.md", "type": "file", "path": "/content/Experiences/Travelers.md" },
+        { "name": "CloudComputingResearch.md", "type": "file", "path": "/content/Experiences/CloudComputingResearch.md" },
+        { "name": "AIResearch.md", "type": "file", "path": "/content/Experiences/AIResearch.md" }
       ]
     },
     {
       "name": "Projects",
       "type": "folder",
       "children": [
-        { "name": "README.md", "type": "file", "path": "/content/projects/README.md" },
-        { "name": "project-one.md", "type": "file", "path": "/content/projects/project-one.md" },
-        { "name": "project-two.md", "type": "file", "path": "/content/projects/project-two.md" }
+        { "name": "StateSpaceSearch.md", "type": "file", "path": "/content/Projects/StateSpaceSearch.md" },
+        { "name": "BlackjackStrategyAnalysis.md", "type": "file", "path": "/content/Projects/BlackjackStrategyAnalysis.md" },
+        { "name": "LeadGenerationAndOutreachPipeline.md", "type": "file", "path": "/content/Projects/LeadGenerationAndOutreachPipeline.md" },
+        { "name": "Rendezvous.md", "type": "file", "path": "/content/Projects/Rendezvous.md" },
+        { "name": "SPLParser.md", "type": "file", "path": "/content/Projects/SPLParser.md" },
+        { "name": "MakeFileReader.md", "type": "file", "path": "/content/Projects/MakeFileReader.md" }
       ]
     }
   ]

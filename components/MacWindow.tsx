@@ -25,18 +25,15 @@ interface MacWindowProps {
   children?: ReactNode;
   filesOpen?: boolean;
   onFilesClick?: () => void;
-  isMobile?: boolean;
 }
 
 function ActivityBarIcon({
   icon: Icon,
-  badge,
   active = false,
   label,
   onClick,
 }: {
   icon: React.ElementType;
-  badge?: string;
   active?: boolean;
   label: string;
   onClick?: () => void;
@@ -53,20 +50,15 @@ function ActivityBarIcon({
         <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-6 bg-white rounded-r" />
       )}
       <Icon size={22} strokeWidth={1.5} />
-      {badge && (
-        <span className="absolute top-1 right-1.5 flex items-center justify-center w-4 h-4 rounded-full bg-blue-500 text-white text-[9px] font-bold leading-none">
-          {badge}
-        </span>
-      )}
     </button>
   );
 }
 
-export default function MacWindow({ children, filesOpen = true, onFilesClick, isMobile = false }: MacWindowProps) {
+export default function MacWindow({ children, filesOpen = true, onFilesClick }: MacWindowProps) {
   return (
     <div className="flex flex-col w-full h-screen overflow-hidden" style={{ backgroundColor: "#191a1b" }}>
 
-      {/* ── Title Bar ── */}
+      {/* Title Bar */}
       <div
         className="flex items-center shrink-0 h-[38px] px-3 gap-2"
         style={{ backgroundColor: "#191a1b", borderBottom: "1px solid rgba(255,255,255,0.05)" }}
@@ -96,38 +88,23 @@ export default function MacWindow({ children, filesOpen = true, onFilesClick, is
           </button>
         </div>
 
-        {/* Search Bar + flanking arrows — desktop only */}
-        {isMobile ? (
-          <div className="flex-1" />
-        ) : (
-          <div className="flex-1 flex items-center justify-center gap-1">
-            <button
-              aria-label="Back"
-              className="text-zinc-500 hover:text-zinc-200 p-0.5 rounded shrink-0"
-            >
-              <ChevronLeft size={18} strokeWidth={1.5} />
-            </button>
-            <button
-              aria-label="Forward"
-              className="text-zinc-500 hover:text-zinc-200 p-0.5 rounded shrink-0"
-            >
-              <ChevronRight size={18} strokeWidth={1.5} />
-            </button>
-
-            <div
-              className="flex items-center gap-2 rounded px-3 h-[26px] cursor-pointer select-none"
-              style={{
-                backgroundColor: "#2b2d30",
-                width: "35%",
-                minWidth: "200px",
-                maxWidth: "480px",
-              }}
-            >
-              <Search size={12} className="text-zinc-500 shrink-0" />
-              <span className="text-zinc-400 text-xs truncate">surajrbhardwaj</span>
-            </div>
+        {/* Search bar — hidden on mobile */}
+        <div className="hidden md:flex flex-1 items-center justify-center gap-1">
+          <button aria-label="Back" className="text-zinc-500 hover:text-zinc-200 p-0.5 rounded shrink-0">
+            <ChevronLeft size={18} strokeWidth={1.5} />
+          </button>
+          <button aria-label="Forward" className="text-zinc-500 hover:text-zinc-200 p-0.5 rounded shrink-0">
+            <ChevronRight size={18} strokeWidth={1.5} />
+          </button>
+          <div
+            className="flex items-center gap-2 rounded px-3 h-[26px] cursor-pointer select-none"
+            style={{ backgroundColor: "#2b2d30", width: "35%", minWidth: "200px", maxWidth: "480px" }}
+          >
+            <Search size={12} className="text-zinc-500 shrink-0" />
+            <span className="text-zinc-400 text-xs truncate">surajrbhardwaj</span>
           </div>
-        )}
+        </div>
+        <div className="flex-1 md:hidden" />
 
         {/* Right controls */}
         <div className="flex items-center gap-1 shrink-0">
@@ -137,7 +114,7 @@ export default function MacWindow({ children, filesOpen = true, onFilesClick, is
         </div>
       </div>
 
-      {/* ── Body (Activity Bar + Content) ── */}
+      {/* Body */}
       <div className="flex flex-1 overflow-hidden">
 
         {/* Activity Bar */}
@@ -145,7 +122,6 @@ export default function MacWindow({ children, filesOpen = true, onFilesClick, is
           className="flex flex-col items-center shrink-0 w-12 py-1"
           style={{ backgroundColor: "#191a1b", borderRight: "1px solid rgba(255,255,255,0.05)" }}
         >
-          {/* Top icons */}
           <div className="flex flex-col items-center w-full flex-1">
             <ActivityBarIcon icon={Files} label="Explorer" active={filesOpen} onClick={onFilesClick} />
             <ActivityBarIcon icon={Search} label="Search" />
@@ -156,8 +132,6 @@ export default function MacWindow({ children, filesOpen = true, onFilesClick, is
             <ActivityBarIcon icon={Zap} label="Lightning" />
             <ActivityBarIcon icon={FileCode} label="File Code" />
           </div>
-
-          {/* Bottom icons */}
           <div className="flex flex-col items-center w-full pb-1">
             <ActivityBarIcon icon={UserCircle} label="Profile" />
             <ActivityBarIcon icon={Settings} label="Settings" />
@@ -170,38 +144,29 @@ export default function MacWindow({ children, filesOpen = true, onFilesClick, is
         </div>
       </div>
 
-      {/* ── Status Bar ── */}
+      {/* Status Bar */}
       <div
-        className="flex items-center shrink-0 h-[22px] px-2 gap-0 text-white text-xs select-none"
+        className="flex items-center shrink-0 h-[22px] px-2 text-white text-xs select-none"
         style={{ backgroundColor: "#007acc", borderTop: "1px solid rgba(255,255,255,0.05)" }}
       >
-        {/* Left side */}
         <div className="flex items-center">
-          {/* Remote indicator */}
           <button className="flex items-center gap-1 px-2 h-full hover:bg-white/5 font-mono font-semibold text-zinc-300">
             &gt;&lt;
           </button>
-          {/* Git branch */}
           <button className="flex items-center gap-1 px-2 h-full hover:bg-white/10 text-white">
             <GitBranch size={12} />
-            <span>main*</span>
+            <span>main</span>
           </button>
-          {/* Errors */}
           <button className="flex items-center gap-1 px-2 h-full hover:bg-white/10 text-white">
             <CircleX size={12} />
             <span>0</span>
           </button>
-          {/* Warnings */}
           <button className="flex items-center gap-1 px-2 h-full hover:bg-white/10 text-white">
             <TriangleAlert size={12} />
             <span>0</span>
           </button>
         </div>
-
-        {/* Spacer */}
         <div className="flex-1" />
-
-        {/* Right side */}
         <div className="flex items-center">
           <button className="flex items-center gap-1 px-2 h-full hover:bg-white/10 text-white">
             <Bot size={13} />

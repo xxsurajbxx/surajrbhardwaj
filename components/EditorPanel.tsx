@@ -37,7 +37,7 @@ export default function EditorPanel({ openTabs, activeTab, onTabClick, onTabClos
     <div className="flex flex-col h-full" style={{ backgroundColor: "#1e1e1e" }}>
       {/* Tab Bar */}
       <div
-        className="flex items-end shrink-0 h-[35px] overflow-x-auto"
+        className="flex items-end shrink-0 h-[35px] overflow-x-auto tab-bar"
         style={{ backgroundColor: "#191a1b", borderBottom: "1px solid rgba(255,255,255,0.08)" }}
       >
         {openTabs.length === 0 ? (

@@ -27,6 +27,17 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <style>{`
+          * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.15) transparent; }
+          *::-webkit-scrollbar { width: 4px; height: 4px; }
+          *::-webkit-scrollbar-track { background: transparent; }
+          *::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+          *::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+          .tab-bar { scrollbar-width: none; }
+          .tab-bar::-webkit-scrollbar { display: none; }
+        `}</style>
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

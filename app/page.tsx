@@ -13,6 +13,7 @@ const TERMINAL_PANEL_ID = "terminal";
 const EDITOR_PANEL_ID = "editor";
 const COLLAPSED_SIZE = 3.8;
 const EXPANDED_SIZE = 35;
+const DEFAULT_TAB: OpenTab = { name: "README.md", path: "/content/README.md" };
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -31,25 +32,29 @@ export default function Home() {
   const verticalGroupRef = useGroupRef();
   const [terminalMinimized, setTerminalMinimized] = useState(false);
   const [filesOpen, setFilesOpen] = useState(false);
-  const defaultTab: OpenTab = { name: "README.md", path: "/content/README.md" };
-  const [openTabs, setOpenTabs] = useState<OpenTab[]>([defaultTab]);
-  const [activeTab, setActiveTab] = useState<string | null>(defaultTab.path);
+  const [openTabs, setOpenTabs] = useState<OpenTab[]>([DEFAULT_TAB]);
+  const [activeTab, setActiveTab] = useState<string | null>(DEFAULT_TAB.path);
+
+  useEffect(() => {
+    setFilesOpen(!window.matchMedia("(max-width: 768px)").matches);
+  }, []);
 
   function handleFileOpen(name: string, path: string) {
-    if (openTabs.find((t) => t.path === path)) {
-      setActiveTab(path);
-      return;
-    }
-    setOpenTabs((prev) => [...prev, { name, path }]);
+    setOpenTabs((prev) => {
+      if (prev.find((t) => t.path === path)) return prev;
+      return [...prev, { name, path }];
+    });
     setActiveTab(path);
   }
 
   function handleTabClose(path: string) {
-    const remaining = openTabs.filter((t) => t.path !== path);
-    setOpenTabs(remaining);
-    if (activeTab === path) {
-      setActiveTab(remaining.length > 0 ? remaining[remaining.length - 1].path : null);
-    }
+    setOpenTabs((prev) => {
+      const remaining = prev.filter((t) => t.path !== path);
+      if (activeTab === path) {
+        setActiveTab(remaining.length > 0 ? remaining[remaining.length - 1].path : null);
+      }
+      return remaining;
+    });
   }
 
   function collapseTerminal() {
@@ -70,9 +75,8 @@ export default function Home() {
 
   if (isMobile) {
     return (
-      <MacWindow filesOpen={filesOpen} onFilesClick={() => setFilesOpen((o) => !o)} isMobile>
+      <MacWindow filesOpen={filesOpen} onFilesClick={() => setFilesOpen((o) => !o)}>
         <div className="relative h-full overflow-hidden">
-          {/* Editor fills full height */}
           <div className="h-full">
             <EditorPanel
               openTabs={openTabs}
@@ -81,8 +85,6 @@ export default function Home() {
               onTabClose={handleTabClose}
             />
           </div>
-
-          {/* File explorer overlay drawer */}
           {filesOpen && (
             <div className="absolute inset-0 z-10" style={{ backgroundColor: "#191a1b" }}>
               <FileExplorer
@@ -110,7 +112,6 @@ export default function Home() {
             <PanelResizeHandle className="w-[1px] bg-white/5 hover:bg-white/20 transition-colors cursor-col-resize" />
           </>
         )}
-
         <Panel>
           <PanelGroup orientation="vertical" className="h-full" groupRef={verticalGroupRef}>
             <Panel id={EDITOR_PANEL_ID} defaultSize={100 - EXPANDED_SIZE} minSize={40}>

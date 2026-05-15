@@ -20,13 +20,12 @@ interface TerminalPanelProps {
 type HistoryEntry = { command: string; output: string[] };
 
 function cwdToPath(cwd: string): string[] {
-  // Strip "~/portfolio" prefix — the JSON root IS "portfolio", so we walk its children
   const segments = cwd.replace("~/", "").split("/").filter(Boolean);
-  return segments.slice(1); // drop "portfolio"
+  return segments.slice(1);
 }
 
 function getNode(pathParts: string[]): FileNode | null {
-  let node: FileNode = filesData as FileNode; // root is "portfolio"
+  let node: FileNode = filesData as FileNode;
   for (const part of pathParts) {
     if (!node.children) return null;
     const child = node.children.find((c) => c.name === part);
@@ -36,11 +35,7 @@ function getNode(pathParts: string[]): FileNode | null {
   return node;
 }
 
-const TABS = ["TERMINAL"] as const;
-type Tab = (typeof TABS)[number];
-
 export default function TerminalPanel({ onFileOpen, minimized, onExit, onHeaderClick }: TerminalPanelProps) {
-  const [activeTab, setActiveTab] = useState<Tab>("TERMINAL");
   const [history, setHistory] = useState<HistoryEntry[]>([
     { command: "", output: ["Welcome to the terminal.", "Type 'help' to see available commands."] },
   ]);
@@ -79,7 +74,7 @@ export default function TerminalPanel({ onFileOpen, minimized, onExit, onHeaderC
           }
           if (arg === "..") {
             const pathParts = cwdToPath(cwd);
-            if (pathParts.length === 0) return { command: raw, output: [] }; // already at root
+            if (pathParts.length === 0) return { command: raw, output: [] };
             const parent = pathParts.slice(0, -1);
             setCwd(parent.length === 0 ? "~/portfolio" : "~/portfolio/" + parent.join("/"));
             return { command: raw, output: [] };
@@ -101,7 +96,14 @@ export default function TerminalPanel({ onFileOpen, minimized, onExit, onHeaderC
         case "pwd":
           return { command: raw, output: [cwd] };
         case "whoami":
-          return { command: raw, output: ["Suraj Rajesh Bhardwaj - Software Engineer - Systems, ML & Quantitative Development"] };
+          return { command: raw, output: ["Suraj Rajesh Bhardwaj — Software Engineer · Systems, ML & Quantitative Development"] };
+        case "resume": {
+          const a = document.createElement("a");
+          a.href = "/resume.pdf";
+          a.download = "Suraj_Bhardwaj_Resume.pdf";
+          a.click();
+          return { command: raw, output: ["Downloading resume..."] };
+        }
         case "sudo":
           return { command: raw, output: ["Nice try. You don't have root privileges here."] };
         case "mkdir":
@@ -131,6 +133,7 @@ export default function TerminalPanel({ onFileOpen, minimized, onExit, onHeaderC
               "  sudo            Nice try.",
               "  clear           Clear terminal",
               "  exit            Minimize the terminal",
+              "  resume          Download a copy of my resume",
               "  help            Show this message",
             ],
           };
@@ -146,10 +149,8 @@ export default function TerminalPanel({ onFileOpen, minimized, onExit, onHeaderC
     const cmd = parts[0];
     const arg = parts.slice(1).join(" ");
 
-    // Only complete the argument portion for commands that take a path
     if (!["ls", "cd", "cat"].includes(cmd) || parts.length < 2) return;
 
-    // Split the arg into a parent path + the prefix being typed
     const argParts = arg.split("/");
     const prefix = argParts[argParts.length - 1];
     const parentParts = argParts.slice(0, -1);
@@ -163,14 +164,9 @@ export default function TerminalPanel({ onFileOpen, minimized, onExit, onHeaderC
       .map((c) => c.name);
 
     if (matches.length === 1) {
-      const completed = [...parentParts, matches[0]].join("/");
-      setInput(`${cmd} ${completed}`);
+      setInput(`${cmd} ${[...parentParts, matches[0]].join("/")}`);
     } else if (matches.length > 1) {
-      // Show all matches as output without submitting
-      setHistory((prev) => [
-        ...prev,
-        { command: input, output: matches },
-      ]);
+      setHistory((prev) => [...prev, { command: input, output: matches }]);
     }
   }
 
@@ -223,23 +219,16 @@ export default function TerminalPanel({ onFileOpen, minimized, onExit, onHeaderC
         className="flex items-end shrink-0 h-[28px] px-2 gap-1"
         style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}
       >
-        {TABS.map((tab) => (
-          <button
-            key={tab}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (minimized) { onHeaderClick(); return; }
-              setActiveTab(tab);
-            }}
-            className="relative px-3 h-full text-[11px] font-medium tracking-wide select-none transition-colors cursor-pointer"
-            style={{
-              color: activeTab === tab ? "#ffffff" : "#6b7280",
-              borderBottom: activeTab === tab ? "1px solid #007acc" : "1px solid transparent",
-            }}
-          >
-            {tab}
-          </button>
-        ))}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            if (minimized) onHeaderClick();
+          }}
+          className="px-3 h-full text-[11px] font-medium tracking-wide select-none cursor-pointer"
+          style={{ color: "#ffffff", borderBottom: "1px solid #007acc" }}
+        >
+          TERMINAL
+        </button>
       </div>
 
       {/* Output area */}
