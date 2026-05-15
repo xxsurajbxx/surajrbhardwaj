@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle, useGroupRef } from "react-resizable-panels";
 import MacWindow from "@/components/MacWindow";
 import FileExplorer from "@/components/FileExplorer";
@@ -15,30 +15,27 @@ const COLLAPSED_SIZE = 3.8;
 const EXPANDED_SIZE = 35;
 const DEFAULT_TAB: OpenTab = { name: "README.md", path: "/content/README.md" };
 
+function subscribe(cb: () => void) {
+  const mq = window.matchMedia("(max-width: 768px)");
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
 function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== "undefined"
-      ? window.matchMedia("(max-width: 768px)").matches
-      : false
+  return useSyncExternalStore(
+    subscribe,
+    () => window.matchMedia("(max-width: 768px)").matches,
+    () => false
   );
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px)");
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-  return isMobile;
 }
 
 export default function Home() {
   const isMobile = useIsMobile();
   const verticalGroupRef = useGroupRef();
   const [terminalMinimized, setTerminalMinimized] = useState(false);
-  const [filesOpen, setFilesOpen] = useState(() =>
-    typeof window !== "undefined"
-      ? !window.matchMedia("(max-width: 768px)").matches
-      : false
-  );
+  const [filesOpen, setFilesOpen] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { setFilesOpen(!window.matchMedia("(max-width: 768px)").matches); }, []);
   const [openTabs, setOpenTabs] = useState<OpenTab[]>([DEFAULT_TAB]);
   const [activeTab, setActiveTab] = useState<string | null>(DEFAULT_TAB.path);
 
